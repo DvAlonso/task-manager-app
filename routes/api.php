@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Task management routes
     Route::prefix('tasks')->group(function() {
         Route::get('/', [TaskController::class, 'index'])->name('api:tasks:index');
-        Route::get('/{task}', [TaskController::class, 'show'])->name('api:tasks:view');
+        Route::get('/{task}', [TaskController::class, 'show'])->name('api:tasks:show');
         Route::post('/', [TaskController::class, 'store'])->name('api:tasks:store');
         Route::put('/{task}', [TaskController::class, 'update'])->name('api:tasks:update');
         Route::put('/{task}/assign', [TaskController::class, 'assign'])->name('api:tasks:assign');

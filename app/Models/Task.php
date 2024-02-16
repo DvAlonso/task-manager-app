@@ -67,6 +67,14 @@ class Task extends Model implements Formattable
     }
 
     /**
+     * Whether the task is assigned to an user,
+     */
+    public function isAssigned(): bool
+    {
+        return ! is_null($this->assigned_user_id);
+    }
+
+    /**
      * Move a task to a new status.
      */
     public function move(TaskStatus $status): void
