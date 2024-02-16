@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', LoginController::class)->name('api:login');
+
+Route::middleware('auth:sanctum')->group(function() {
+
+    // Task management routes
+    Route::prefix('tasks')->group(function() {
+        Route::get('/', [TaskController::class, 'index'])->name('api:tasks:index');
+        Route::get('/{task}', [TaskController::class, 'show'])->name('api:tasks:view');
+        Route::post('/', [TaskController::class, 'store'])->name('api:tasks:store');
+        Route::put('/{task}', [TaskController::class, 'update'])->name('api:tasks:update');
+        Route::delete('/{task}', [TaskController::class, 'delete'])->name('api:tasks:delete');
+    });
 });
