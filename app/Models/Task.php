@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Concerns\Formattable;
 use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Task extends Model
+class Task extends Model implements Formattable
 {
     use HasFactory, SoftDeletes;
 
@@ -21,7 +22,7 @@ class Task extends Model
         'title',
         'description',
         'status',
-        'assigned_to',
+        'assigned_user_id',
     ];
 
     /**
@@ -63,5 +64,61 @@ class Task extends Model
     public function isCompleted(): bool
     {
         return $this->status == TaskStatus::Completed;
+    }
+
+    /**
+     * Move a task to a new status.
+     */
+    public function move(TaskStatus $status): void
+    {
+        $this->update([
+            'status' => $status,
+        ]);
+    }
+
+    /**
+     * Assign the task to an user.
+     */
+    public function assign(User $user): void
+    {
+        $this->update([
+            'assigned_user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Unset the assigned user.
+     */
+    public function unassign(): void
+    {
+        $this->update([
+            'assigned_user_id' => null
+        ]);
+    }
+
+    /**
+     * Format the entity for API response displaying.
+     */
+    public function format(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => $this->status,
+            'assigned_to' => optional($this->assigned_to)->format(),
+            'created_at' => $this->created_at->diffForHumans(),
+            'updated_at' => $this->updated_at->diffForHumans(),
+        ];
+    }
+
+    public static function booted()
+    {
+        // Set default status when creating a new task unless specified.
+        static::creating(function (Task $task) {
+            if (is_null($task->status)) {
+                $task->status = TaskStatus::Pending;
+            }
+        });
     }
 }
