@@ -52,16 +52,16 @@ DB_USERNAME=[your_db_username]
 DB_PASSWORD=[your_db_password]
 ```
 
-Start apllication
-
-```sh
-php artisan serve
-```
-
 Run the database migrations.
 
 ```sh
 php artisan migrate:fresh --seed
+```
+
+Start apllication
+
+```sh
+php artisan serve
 ```
 
 ## Docs
