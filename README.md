@@ -64,7 +64,15 @@ Start apllication
 php artisan serve
 ```
 
+## Credentials
+
+For testing purposes, some default users are created. You can try out the API with the following credentials
+Username: demo@task-manager.com
+Password: password
+
 ## Docs
+
+API docs can be found in the [repository wiki](https://github.com/DvAlonso/task-manager-app/wiki)
 
 ## Testing
 
