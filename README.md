@@ -67,7 +67,9 @@ php artisan serve
 ## Credentials
 
 For testing purposes, some default users are created. You can try out the API with the following credentials
+
 Username: demo@task-manager.com
+
 Password: password
 
 ## Docs
