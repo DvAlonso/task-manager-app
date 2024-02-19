@@ -2,6 +2,21 @@
 
 ## Requirements
 
+-   PHP 8.2 with extensions:
+    -   cli
+    -   common
+    -   mysql
+    -   zip
+    -   gd
+    -   mbstring
+    -   curl
+    -   xml
+    -   bcmatch
+    -   intl
+    -   sqlite3
+-   Composer
+-   MySQL (with database and user with privileges)
+
 ## Installation
 
 Clone the repository
@@ -11,20 +26,10 @@ git clone git@github.com:DvAlonso/task-manager-app.git
 cd task-manager-app
 ```
 
-Create the docker-compose.yml file
+Install the dependencies
 
 ```sh
-cp docker-compose.template.yml docker-compose.yml
-```
-
-Replace the following value with the current user name. You can replace the default container names and network names, but you may continue with the default ones.
-
-```yml
-services:
-    app:
-        build:
-            args:
-                user: [user_name]
+composer install
 ```
 
 Create the .env file
@@ -33,42 +38,38 @@ Create the .env file
 cp .env.example .env
 ```
 
+Generate the application key
+
+```sh
+php artisan key:generate
+```
+
 Update the following values inside the .env file
 
 ```sh
-DB_HOST=[db-container-name] *
-DB_PORT=3306
-DB_DATABASE=[your_desired_db_name]
-DB_USERNAME=[your_desired_db_username]
-DB_PASSWORD=[your_desired_db_password]
-```
-
-\* If docker-compose.yml was not modified, db-container-name should be replaced with task-manager-db
-
-Build the docker image
-
-```sh
-docker-compose build app
+DB_DATABASE=[your_db_name]
+DB_USERNAME=[your_db_username]
+DB_PASSWORD=[your_db_password]
 ```
 
 Start apllication
 
 ```sh
-docker-compose build -d
+php artisan serve
 ```
 
-Run the database migrations. If you changed the container name in the docker-compose.yml file, replace task-manager-app with your container name.
+Run the database migrations.
 
 ```sh
-docker exec -it task-manager-app php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
 ```
 
 ## Docs
 
 ## Testing
 
-Run the tests. If you changed the container name in the docker-compose.yml file, replace task-manager-app with your container name.
+Run the test suite.
 
 ```sh
-docker exec -it task-manager-app php artisan test
+php artisan test
 ```
